@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/queryBuilder/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/queryBuilder/css/query-builder.default.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css"
+    />
+    <link
+      href="static/bootstrap/2.3.1/css_default/bootstrap-select.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="static/bootstrap-table/src/bootstrap-table.css"
+      rel="stylesheet"
+    />
+    <!-- <link href="static/jquery/" rel="stylesheet"/> -->
+    <script
+      type="text/javascript"
+      src="static/query/js/jquery-1.11.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/queryBuilder/js/bootstrap.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/queryBuilder/js/query-builder.standalone.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/queryBuilder/js/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/queryBuilder/js/interact.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/queryBuilder/i18n/query-builder.zh-CN.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/bootstrap/2.3.1/js/bootstrap-select.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/bootstrap-table/src/bootstrap-table.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/bootstrap-table/dist/bootstrap-table-zh.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/bootstrap-table/src/extensions/export/bootstrap-table-export.js"
+    ></script>
+  </head>
+  <style>
+     select{
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    width: 100px;
+    height: 30px;
+    /* padding-right: 8px; */
+    padding-left: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.panel-body {
+    padding: 15px;
+      background: aliceblue;
+      }
+  </style>
+  <body>
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a
+          class="btn btn-inverse btn-large accordion-toggle"
+          data-toggle="collapse"
+          data-parent="#accordion2"
+          href="#collapseOne"
+        >
+        定制查询
+        </a>
+      </div>
+      请选择查询类：
+      <select id="pid">
+
+          <option grade="1" value="medical_org" selected>医疗机构</a>
+      
+          <option grade="2" value="waste_person">管理人员</a>
+      
+      </select>
+      <div id="collapseOne" class="accordion-body collapse in">
+          <div class="panel-body">
+        <div class="accordion-inner">
+            
+          <div class="center">
+            <div id="builder-basic"></div>
+            <br />
+            <button
+              id="btn-get"
+              type="button"
+              class="el-button el-button--primary btn btn-success"
+              data-target="basic"
+            >
+              <i class="glyphicon glyphicon-ok"></i><span> 确定</span>
+            </button>
+            <button
+              id="btn-reset"
+              type="button"
+              class="el-button el-button--primary btn btn-inverse"
+              data-target="basic"
+            >
+              <i class="glyphicon glyphicon-repeat"></i><span> 重置</span>
+            </button>
+            <button
+              id="btn-export"
+              type="button"
+              class="el-button el-button--primary btn btn-danger"
+            >
+              <i class="glyphicon glyphicon-export"></i><span> 导出</span>
+            </button>
+            <!-- <form action="http://172.16.1.61:8080/customLoadDown" method="post" enctype="multipart/form-data">
+              <input type="file" name="file" multiple="multiple" />
+              <input type="submit" />
+            </form> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <table id="table" class="text-nowrap"></table>
+    <script type="text/javascript">
+      var filters = [
+        // {
+        //   dbCode: 'xqwaste',
+        //   tableCode: 'medical_org',
+        //   id: 'id',
+        //   label: '',
+        //   type: 'integer'
+        // },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'orgName',
+          label: '机构名称',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'nowStatus',
+          label: '当前状态',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'registerNo',
+          label: '登记号',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'uncode',
+          label: '全国唯一识别码',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'secondName',
+          label: '机构第二名称',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'orgAdr',
+          label: '机构地址',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'tel',
+          label: '电话号码',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'zipCode',
+          label: '邮政编码',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'legalPersonName',
+          label: '法人姓名',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'legalPersonNo',
+          label: '法人证件号',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'chargePerName',
+          label: '负责人姓名',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'chargePerNo',
+          label: '负责人证件号',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          plugin: 'datepicker',
+          plugin_config: {
+            changeYear: 'true',
+            autoclose: 'true',
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'true',
+            language: 'zh-CN'
+          },
+          tableCode: 'medical_org',
+          id: 'applyDate',
+          label: '申请日期',
+          type: 'date',
+          validation: { format: 'yyyy-mm-dd' }
+        },
+        {
+          dbCode: 'xqwaste',
+          plugin: 'datepicker',
+          plugin_config: {
+            changeYear: 'true',
+            autoclose: 'true',
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'true',
+            language: 'zh-CN'
+          },
+          tableCode: 'medical_org',
+          id: 'authDate',
+          label: '批准日期',
+          type: 'date',
+          validation: { format: 'yyyy-mm-dd' }
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'authNo',
+          label: '批准文号',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          plugin: 'datepicker',
+          plugin_config: {
+            changeYear: 'true',
+            autoclose: 'true',
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'true',
+            language: 'zh-CN'
+          },
+          tableCode: 'medical_org',
+          id: 'effStartDate',
+          label: '有效期开始日期',
+          type: 'date',
+          validation: { format: 'yyyy-mm-dd' }
+        },
+        {
+          dbCode: 'xqwaste',
+          plugin: 'datepicker',
+          plugin_config: {
+            changeYear: 'true',
+            autoclose: 'true',
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'true',
+            language: 'zh-CN'
+          },
+          tableCode: 'medical_org',
+          id: 'effEndDate',
+          label: '有效期截止日期',
+          type: 'date',
+          validation: { format: 'yyyy-mm-dd' }
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'regisOrg',
+          label: '登记发证机关',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'administrativeArea',
+          label: '行政区划',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'ownership',
+          label: '所有制形式',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'subordinate',
+          label: '隶属关系',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'serviceObject',
+          label: '服务对象',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'orgKind',
+          label: '机构类别',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'orgClass',
+          label: '机构级别',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'orgGrades',
+          label: '机构等次',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'nature',
+          label: '经营性质（审批局）',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'nature2',
+          label: '经营性质',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'beds',
+          label: '床位数',
+          type: 'double'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'toothChair',
+          label: '牙椅数',
+          type: 'double'
+        },
+        {
+          dbCode: 'xqwaste',
+          plugin: 'datepicker',
+          plugin_config: {
+            changeYear: 'true',
+            autoclose: 'true',
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'true',
+            language: 'zh-CN'
+          },
+          tableCode: 'medical_org',
+          id: 'openDate',
+          label: '开业日期',
+          type: 'date',
+          validation: { format: 'yyyy-mm-dd' }
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'registerFund',
+          label: '注册资金',
+          type: 'double'
+        },
+        {
+          dbCode: 'xqwaste',
+          plugin: 'datepicker',
+          plugin_config: {
+            changeYear: 'true',
+            autoclose: 'true',
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'true',
+            language: 'zh-CN'
+          },
+          tableCode: 'medical_org',
+          id: 'nextCheckDate',
+          label: '下一校验日期',
+          type: 'date',
+          validation: { format: 'yyyy-mm-dd' }
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'treatSubjectName',
+          label: '诊疗科目名称',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'treatSubjecCode',
+          label: '诊疗科目代码',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'serviceType',
+          label: '服务方式',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'street',
+          label: '街道',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'wasteNum',
+          label: '废弃物处理人数',
+          type: 'double'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'whetherTraining',
+          label: '废弃物人员是否参加培训',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'isManger',
+          label: '是否是管理单位',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'remark1',
+          label: '备注一',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'remark2',
+          label: '备注二',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'remark3',
+          label: '备注3',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'remark4',
+          label: '备注4',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'remark5',
+          label: '备注5',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'medical_org',
+          id: 'remark6',
+          label: '备注6',
+          type: 'string'
+        },
+        // 人员的json
+        // {
+        //   dbCode: 'xqwaste',
+        //   tableCode: 'waste_person',
+        //   id: 'id',
+        //   label: 'id',
+        //   type: 'integer'
+        // },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'name',
+          label: '姓名',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'sex',
+          label: '性别',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'cardno',
+          label: '身份证号',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'code',
+          label: '编号',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'photo',
+          label: '相片',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'remark',
+          label: 'remark',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'remark2',
+          label: 'remark2',
+          type: 'string'
+        },
+        {
+          dbCode: 'xqwaste',
+          tableCode: 'waste_person',
+          id: 'remark3',
+          label: 'remark3',
+          type: 'string'
+        }
+      ];
+      $(document).ready(function($) {
+        $("#pid").change(function(){
+          $('#builder-basic').queryBuilder('destroy');
+          $('#builder-basic').queryBuilder({
+                plugins: ['bt-tooltip-errors'],
+                filters: filters.filter((p) => {
+                    return p.tableCode == $("#pid").val();
+                })
+            });
+        });
+        $('#builder-basic').queryBuilder({
+          plugins: ['bt-tooltip-errors'],
+          // 医疗机构的json
+          filters: filters.filter((p) => {
+             return p.tableCode == $("#pid").val();
+          })
+          // 人员的json
+          // [{"dbCode":"xqwaste","tableCode":"waste_person","id":"id","label":"id","type":"int"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"name","label":"姓名","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"sex","label":"性别","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"cardno","label":"身份证号","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"code","label":"编号","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"photo","label":"相片","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"remark","label":"remark","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"remark2","label":"remark2","type":"varchar"},{"dbCode":"xqwaste","tableCode":"waste_person","id":"remark3","label":"remark3","type":"varchar"}]
+        });
+        $('#btn-reset').on('click', function() {
+          $('#builder-basic').queryBuilder('reset');
+        });
+        $('#btn-get').on('click', function() {
+          var result = $('#builder-basic').queryBuilder('getSQL');
+          var rules = $('#builder-basic').queryBuilder('getRules');
+
+          if (!$.isEmptyObject(result)) {
+            var filterSql = result.sql;
+            $('#table').bootstrapTable('destroy');
+            //1.初始化Table
+            var oTable = new TableInit();
+            if ($("#pid").val() == 'medical_org') {
+              oTable.InitMedical('medical', filterSql);
+            }
+            else {
+              oTable.InitPerson('person', filterSql);
+            }
+          }
+        });
+        
+        // 导出
+        $('#btn-export').on('click', function() {
+          var result = $('#builder-basic').queryBuilder('getSQL');
+          if ($("#pid").val() == 'medical_org') {
+             doExport('medical',result.sql);
+          }
+          else {
+             doExport('person',result.sql);
+          }
+        });
+      });
+      var TableInit = function() {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.InitMedical = function(type, filterSql) {
+          $('#table').bootstrapTable({
+            url: '/gtp-server/customQuery', //请求后台的URL（*）
+            method: 'get', //请求方式（*）
+            dataType: 'json',
+            toolbar: '#toolbar', //工具按钮用哪个容器
+            striped: true, //是否显示行间隔色
+            cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true, //是否显示分页（*）
+            sortable: false, //是否启用排序
+            sortOrder: 'asc', //排序方式
+            queryParams: function(params) {
+              //params.offset = params.offset 
+              if(params.offset == undefined ) {
+                var temp = {
+                type: type,
+                filterSql: filterSql
+               };
+                return temp;
+              }
+              else {
+                var temp = {
+                //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                size: params.limit, //页面大小
+                page: params.offset / params.limit + 1, //页码
+                type: type,
+                filterSql: filterSql
+               };
+                return temp;
+              }
+              console.log(params);
+              
+            }, 
+            //传递参数（*）
+            sidePagination: 'server', //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+            search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: false,
+            showColumns: true, //是否显示所有的列
+            showRefresh: true, //是否显示刷新按钮
+            minimumCountColumns: 2, //最少允许的列数
+            clickToSelect: true, //是否启用点击选中行
+            //height: 500, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: 'ID', //每一行的唯一标识，一般为主键列
+            showToggle: true, //是否显示详细视图和列表视图的切换按钮
+            cardView: false, //是否显示详细视图
+            detailView: false, //是否显示父子表
+            responseHandler: function(res) {
+              return {
+                total: res.data.total, //总页数
+                rows: res.data.rows //数据
+              }
+            },
+           /*  exportDataType:'all',
+            showExport: true,  //是否显示导出按钮
+            buttonsAlign:"right",  //按钮位置
+            exportTypes:['excel'],  //导出文件类型
+            Icons:'glyphicon-export',
+            exportOptions:{
+              ignoreColumn: [0,1],  //忽略某一列的索引
+              fileName: '总台帐报表',  //文件名称设置
+              worksheetName: 'sheet1',  //表格工作区名称
+              tableName: '总台帐报表',
+              excelstyles: ['background-color', 'color', 'font-size', 'font-weight']
+            }, */
+            columns: [
+              {
+                field: 'orgName',
+                title: '机构名称',
+                width: '250px'
+              },
+              {
+                field: 'nowStatus',
+                title: '当前状态'
+              },
+              {
+                field: 'registerNo',
+                title: '登记号'
+              },
+              {
+                field: 'uncode',
+                title: '全国唯一识别码'
+              },
+              {
+                field: 'secondName',
+                title: '机构第二名称'
+              },
+              {
+                field: 'orgAdr',
+                title: '机构地址'
+              },
+              {
+                field: 'tel',
+                title: '电话号码'
+              },
+              {
+                field: 'zipCode',
+                title: '邮政编码'
+              },
+              {
+                field: 'legalPersonName',
+                title: '法人姓名'
+              },
+              {
+                field: 'legalPersonName',
+                title: '法人姓名'
+              },
+              {
+                field: 'legalPersonNo',
+                title: '法人证件号'
+              },
+              {
+                field: 'chargePerName',
+                title: '负责人姓名'
+              },
+              {
+                field: 'chargePerNo',
+                title: '负责人证件号'
+              },
+              {
+                field: 'legalPersonName',
+                title: '法人姓名'
+              },
+              {
+                field: 'effStartDate',
+                title: '有效期开始日期'
+              },
+              {
+                field: 'effEndDate',
+                title: '有效期截止日期'
+              },
+              {
+                field: 'authNo',
+                title: '法人姓名'
+              },
+
+              {
+                field: 'administrativeArea',
+                title: '批准文号'
+              },
+              {
+                field: 'applyDate',
+                title: '申请日期'
+              },
+              {
+                field: 'authDate',
+                title: '批准日期'
+              },
+              {
+                field: 'regisOrg',
+                title: '登记发证机关'
+              },
+              {
+                field: 'ownership',
+                title: '所有制形式'
+              },
+              {
+                field: 'subordinate',
+                title: '隶属关系'
+              },
+              {
+                field: 'serviceObject',
+                title: '服务对象'
+              },
+              {
+                field: 'orgKind',
+                title: '机构类别'
+              },
+              {
+                field: 'orgClass',
+                title: '机构级别'
+              },
+              {
+                field: 'orgKind',
+                title: '机构类别'
+              },
+              {
+                field: 'orgGrades',
+                title: '机构等次'
+              },
+              {
+                field: 'nature',
+                title: '经营性质（审批局）'
+              },
+              {
+                field: 'beds',
+                title: '床位数'
+              },
+              {
+                field: 'toothChair',
+                title: '牙椅数'
+              },
+              {
+                field: 'openDate',
+                title: '开业日期'
+              },
+              {
+                field: 'registerFund',
+                title: '注册资金'
+              },
+              {
+                field: 'treatSubjectName',
+                title: '诊疗科目名称'
+              },
+              {
+                field: 'treatSubjecCode',
+                title: '诊疗科目代码'
+              },
+              {
+                field: 'serviceType',
+                title: '服务方式'
+              },
+              {
+                field: 'serviceType',
+                title: '服务方式'
+              },
+              {
+                field: 'street',
+                title: '街道'
+              },
+              {
+                field: 'wasteNum',
+                title: '废弃物处理人数'
+              },
+              {
+                field: 'whetherTraining',
+                title: '废弃物人员是否参加培训'
+              },
+              {
+                field: 'isManger',
+                title: '是否是管理单位'
+              },
+              {
+                field: 'remark1',
+                title: '备注一'
+              }
+            ]
+          });
+        };
+
+        //初始化Table
+        oTableInit.InitPerson = function(type, filterSql) {
+          $('#table').bootstrapTable({
+            url: '/gtp-server/customQuery', //请求后台的URL（*）
+            method: 'get', //请求方式（*）
+            dataType: 'json',
+            toolbar: '#toolbar', //工具按钮用哪个容器
+            striped: true, //是否显示行间隔色
+            cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true, //是否显示分页（*）
+            sortable: false, //是否启用排序
+            sortOrder: 'asc', //排序方式
+            queryParams: function(params) {
+              // console.log(params);
+              var temp = {
+                //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                size: params.limit, //页面大小
+                page: params.offset / params.limit + 1, //页码
+                type: type,
+                filterSql: filterSql
+              };
+              return temp;
+            }, //传递参数（*）
+            sidePagination: 'server', //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+            search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: false,
+            showColumns: true, //是否显示所有的列
+            showRefresh: true, //是否显示刷新按钮
+            minimumCountColumns: 2, //最少允许的列数
+            clickToSelect: true, //是否启用点击选中行
+            //height: 500, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: 'ID', //每一行的唯一标识，一般为主键列
+            showToggle: true, //是否显示详细视图和列表视图的切换按钮
+            cardView: false, //是否显示详细视图
+            detailView: false, //是否显示父子表
+            responseHandler: function(res) {
+              return {
+                total: res.data.total, //总页数
+                rows: res.data.rows //数据
+              };
+            },
+            columns: [
+              {
+                field: 'code',
+                title: '编号'
+              },
+              {
+                field: 'name',
+                title: '姓名'
+              },
+              {
+                field: 'cardno',
+                title: '身份证号'
+              },
+              {
+                field: 'name',
+                title: '姓名'
+              },
+              {
+                field: 'sex',
+                title: '性别'
+              },
+              {
+                field: 'remark',
+                title: '备注'
+              }
+            ]
+          });
+        };
+        return oTableInit;
+      };
+      var ButtonInit = function() {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function() {
+          //初始化页面上面的按钮事件
+        };
+        return oInit;
+      };
+
+      // 导出文件 
+      function doExport(type, filterSql) {
+        var url = '/gtp-server/customLoadDown';
+        var form = $("<form>");//定义一个form表单
+        form.attr("style", "display:none");
+        form.attr("target", "");
+        form.attr("method", "get");//请求类型
+        form.attr("action", url);//请求地址
+        $("body").append(form)
+        var input1 = $("<input>");
+        input1.attr("type", "hidden");
+        input1.attr("name", "type");
+        input1.attr("value", type);
+        var input2 = $("<input>");
+        input2.attr("type", "hidden");
+        input2.attr("name", "filterSql");
+        input2.attr("value", filterSql);
+        form.append(input1);
+        form.append(input2);
+        form.submit();
+      }
+    </script>
+  </body>
+</html>

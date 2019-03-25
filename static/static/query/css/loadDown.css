@@ -1,0 +1,33 @@
+﻿/* 效果CSS开始 */
+.selectbox{
+	width:800px;height:250px;
+	margin-top: 65px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+}
+.selectbox div{float:left;}
+.selectbox .select-bar{padding:0 20px;    position: relative;}
+.selectbox .select-bar select{width:200px;height:250px;border:1px #A0A0A4 solid;padding:4px;font-size:14px;font-family:"microsoft yahei";}
+.selectTile{
+	position: absolute;
+    top: -40px;
+    height: 40px;
+    line-height: 40px;
+    background: #578ebe url(../images/icon.png) no-repeat 14px center;
+    padding-left: 47px;
+    color: #fff;
+    width: 200px;
+}
+.btn-bar{}
+.btn-bar p{margin-top:1px;}
+.btn-bar p .btn{width:50px;height:30px;cursor:pointer;font-family:simsun;font-size:14px;}
+
+.btn_index{
+	width: 35px;
+    height: 35px;
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+}
